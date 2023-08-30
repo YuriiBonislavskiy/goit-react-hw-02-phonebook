@@ -1,4 +1,4 @@
-import React, { Component, useRef, useEffect } from 'react';
+import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
 import css from './App.module.css';
@@ -18,7 +18,8 @@ class App extends Component {
 
   nameInputId = nanoid();
   phoneInputId = nanoid();
- 
+  cursorNumberPos = {};
+
   addContactSubmit = event => {
     event.preventDefault();
     const { contacts, name, number } = this.state;
@@ -87,7 +88,7 @@ class App extends Component {
     // console.log(this.state.name, "  ", this.state.number);
 
     const { target } = event;
-    const { name, value, title, dataset } = event.target;
+    const { name, value,  title, dataset } = event.target;
 
     switch (name) {
       case 'name':
@@ -108,22 +109,24 @@ class App extends Component {
         break;
 
       case 'number':
-          const verifiedNumber = phoneVerification(
+        this.cursorNumberPos = target.current.selectionStart;
+        console.log(this.corsorNumberPos);
+        const verifiedNumber = phoneVerification(
           value, // Значення Input
           dataset.mask, // Маска вводу
           title, // Стандартне повідомлення про помилку
           dataset.prevalue, // Попереднє значення Input
-          event
+          target
         );
         target.selectionEnd = this.cursorNumberPos;
         target.value = verifiedNumber.value;
-
-        target.value === target.dataset.prevalue &&
+        
+          (target.value === target.dataset.prevalue) &&
           // console.log('!!!!!!!!!!!');
           verifiedNumber.errorMassage &&
-          Notiflix.Notify.failure(verifiedNumber.errorMassage, {
-            timeout: 2000,
-          });
+            Notiflix.Notify.failure(verifiedNumber.errorMassage, {
+              timeout: 2000,
+            });
         target.dataset.prevalue = target.value;
         this.setState({ number: target.value });
         break;
@@ -170,7 +173,6 @@ class App extends Component {
                 data-prevalue=""
                 placeholder={мaskPattern}
                 onChange={this.contactValueVerification}
-
                 // onKeyDown={this.contactValueVerification}
               />
             </label>

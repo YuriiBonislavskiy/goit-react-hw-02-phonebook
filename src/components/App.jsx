@@ -38,11 +38,22 @@ class App extends Component {
     };
     // console.log(contact);
     // const Contacts = [contact, ...contacts];
-    this.setState({
-      contacts: [...contacts, contact],
-      name: '',
-      number: '',
+    this.setState(preState => {
+      const newContacts = [...preState.contacts, contact];
+      return { contacts: newContacts, name: '', number: '' };
     });
+
+    // this.setState( presState => {
+    //   const newContacts = [...presState.contacts, contact];
+    //   return
+
+    // });
+    // this.setState(() => {
+    //   return {
+    //     name: '',
+    //     number: '',
+    //   };
+    // });
 
     event.target.reset();
     setInterval(this.sortContacts, 20);
@@ -65,7 +76,9 @@ class App extends Component {
     // const { value, pattern, title } = event.target;
     // target.value = nameVerification(value, pattern, title);
     // event.target.value = value;
-    this.setState({ filter: value });
+    this.setState(() => {
+      return { filter: value };
+    });
   };
 
   getVisibleContacts = () => {
@@ -82,6 +95,13 @@ class App extends Component {
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
+  };
+
+  saveInputValue = ({ target }) => {
+    const { name } = target;
+    this.setState(() => {
+      return { [name]: target.value };
+    });
   };
 
   contactValueVerification = event => {
@@ -107,8 +127,10 @@ class App extends Component {
             timeout: 2000,
           });
         target.dataset.prevalue = target.value;
-        this.setState({ name: target.value });
-        target.setSelectionRange(verifiedName.cursorPos, verifiedName.cursorPos);
+        target.setSelectionRange(
+          verifiedName.cursorPos,
+          verifiedName.cursorPos
+        );
         break;
 
       case 'number':
@@ -129,14 +151,15 @@ class App extends Component {
             timeout: 2000,
           });
         target.dataset.prevalue = target.value;
-        this.setState({ number: target.value });
-        target.setSelectionRange(verifiedNumber.cursorPos, verifiedNumber.cursorPos);
-    // console.log(verifiedNumber.cursorPos);
+        target.setSelectionRange(
+          verifiedNumber.cursorPos,
+          verifiedNumber.cursorPos
+        );
+        // console.log(verifiedNumber.cursorPos);
         break;
 
       default:
     }
-
   };
 
   render() {
@@ -160,6 +183,7 @@ class App extends Component {
                 data-prevalue=""
                 id={this.nameInputId}
                 onChange={this.contactValueVerification}
+                onBlur={this.saveInputValue}
                 // onKeyDown={this.contactValueVerification}
               />
             </label>
@@ -177,6 +201,7 @@ class App extends Component {
                 data-prevalue=""
                 placeholder={мaskPattern}
                 onChange={this.contactValueVerification}
+                onBlur={this.saveInputValue}
                 // onKeyDown={this.contactValueVerification}
               />
             </label>
@@ -190,6 +215,7 @@ class App extends Component {
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             onChange={this.changeFilter}
+            onBlur={this.saveInputValue}
           >
             {this.filter}
           </input>

@@ -96,7 +96,6 @@ function cleanValueInit(value, startPos, re) {
 function valueMake(mask, cleanValue, maxValueLength) {
   let i = 0;
   let value = '';
-  console.log(maxValueLength);
 
   for (let iI = 0; iI <= mask.length - 1; iI += 1) {
     if (mask[iI] === '_') {
@@ -112,17 +111,3 @@ function valueMake(mask, cleanValue, maxValueLength) {
   }
   return value;
 }
-
-// export function getCaretPos(obj) {
-//   obj.focus();
-//   if (obj.selectionStart) return obj.selectionStart;
-//   else if (document.selection) {
-//     var sel = document.selection.createRange();
-//     var clone = sel.duplicate();
-//     sel.collapse(true);
-//     clone.moveToElementText(obj);
-//     clone.setEndPoint('EndToEnd', sel);
-//     return clone.text.length;
-//   }
-//   return 0;
-// }

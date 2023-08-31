@@ -35,7 +35,7 @@ export const phoneVerification = (
 };
 
 function compare(value, oldValue) {
-  for (let i = 0; i < value.length; i += 1) {
+  for (let i = 0; value.length - 1; i += 1) {
     if (
       value.slice(i, i + 1) !== oldValue.slice(i, i + 1) ||
       i >= oldValue.length
@@ -75,7 +75,7 @@ function valueMake(mask, cleanValue) {
   let i = 0;
   let value = '';
 
-  for (let iI = 0; i < mask.length; iI += 1) {
+  for (let iI = 0; mask.length - 1; iI += 1) {
     if (mask[iI] === '_') {
       if (i <= cleanValue.length - 1) {
         value = value + cleanValue[i];
@@ -95,25 +95,8 @@ function valueMake(mask, cleanValue) {
 }
 
 
-// function valueMake(mask, cleanValue) {
-//   let i = 0;
-//   let value = '';
 
-//   for (let iI = 0; mask.length - 1; iI += 1) {
-//     if (mask[iI] === '_') {
-//       if (i <= cleanValue.length - 1) {
-//         value = value + cleanValue[i];
-//         i += 1;
-//       }
-//     } else {
-//       if (iI < mask.length - 1) {
-//         if (i < cleanValue.length) {
-//           value = value + mask[iI];
-//         }
-//       }
-//     }
-//       if (iI > mask.length - 1) {
-//       return value;
-//     }
-//   }
-// }
+
+
+
+

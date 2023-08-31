@@ -1,41 +1,50 @@
 import { capitalize } from 'utils';
+import { getCaretPos } from 'utils';
 
 export const nameVerification = (
   value,
   regPattern,
   regPatternAdd,
   errorMassage,
-  oldValue
+  oldValue,
+  target
 ) => {
   const re = new RegExp(regPattern);
+  let cursorPos = getCaretPos(target);
+
   // console.log(regPatternAdd);
   const lastKey =
     value.length > 1
       ? compare(value, oldValue)
       : {
-          simbol: value.slice(value.length - 1, value.length),
+          symbol: value.slice(value.length - 1, value.length),
           pos: 0,
         };
-
-  if (!re.test(lastKey.simbol)) {
-    return { value: oldValue, errorMassage: errorMassage };
+  if (value.length < oldValue.length) {
+    return { value: value, errorMassage: '', cursorPos };
   }
 
-  //   if (value.length > mask.length) {
-  //     value = value.slice(0, value.length - 1);
-  // const cleanValue = cleanValueInit(value);
-  //   }
+  if (!re.test(lastKey.symbol)) {
+    return { value: oldValue, errorMassage: errorMassage, cursorPos };
+  }
+
   const verifiedName = valueMake(value, oldValue, lastKey, regPatternAdd);
-  return { value: verifiedName.value, errorMassage: verifiedName.errorMassage };
+  // console.log(verifiedName);
+  cursorPos = getCaretPos(target);
+  return {
+    value: verifiedName.value,
+    errorMassage: verifiedName.errorMassage,
+    cursorPos,
+  };
 };
 
 function compare(value, oldValue) {
-  for (let i = 0; value.length - 1; i += 1) {
+  for (let i = 0; i < value.length; i += 1) {
     if (
       value.slice(i, i + 1) !== oldValue.slice(i, i + 1) ||
       i >= oldValue.length
     ) {
-      return { simbol: value.slice(i, i + 1), pos: i };
+      return { symbol: value.slice(i, i + 1), pos: i };
     }
   }
 }
@@ -50,35 +59,37 @@ function compare(value, oldValue) {
 //   }
 // }
 
-function valueMake(value, oldValue, { simbol, pos }, regPatternAdd) {
-  let currentSimbol = '';
+function valueMake(value, oldValue, { symbol, pos }, regPatternAdd) {
+  let currentsymbol = '';
   let currentValue = '';
 
   for (let i = 0; i < value.length; i += 1) {
-    currentSimbol = value.slice(i, i + 1);
-    console.log(currentSimbol.indexOf(regPatternAdd), i, value.length);
-    if (currentSimbol.indexOf(regPatternAdd) > 0 && i === 0) {
+    currentsymbol = value.slice(i, i + 1);
+    // console.log(currentsymbol+"!",regPatternAdd, "  ", currentsymbol.includes(regPatternAdd), i, value.length);
+
+    if (regPatternAdd.includes(currentsymbol) && i === 0) {
       return {
         value: oldValue,
         errorMassage: "Ім'я не може починатись з символу",
       };
     }
+
     if (
-      currentSimbol.indexOf(regPatternAdd) > 0 &&
+      regPatternAdd.includes(currentsymbol) &&
       i > 1 &&
-      value.slice(i - 1, i).indexOf(regPatternAdd) > 0
+      regPatternAdd.includes(value.slice(i - 1, i))
     ) {
+      // console.log("!!!!!!!!!");
       return {
         value: oldValue,
         errorMassage: 'Два символи поспьль стояти не можуть',
       };
     }
-    currentValue += currentSimbol;
-    if (i > value.length) {
-      return {
-        value: currentValue,
-        errorMassage: '',
-      };
-    }
+    currentValue += currentsymbol;
   }
+value = capitalize(currentValue, " ");
+  return {
+    value: value,
+    errorMassage: '',
+  };
 }

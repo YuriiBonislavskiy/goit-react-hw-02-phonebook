@@ -4,13 +4,14 @@ export const phoneVerification = (
   errorMassage,
   oldValue
 ) => {
+
+  
   const re = new RegExp(/[0-9]/);
 
   const lastKey =
     value.length > 1
       ? compare(value, oldValue)
       : { symbol: value.slice(value.length - 1, value.length), pos: 0 };
-    
 
   const { mask, startPos } = maskArrayInit(maskPattern);
   const cleanValue = cleanValueInit(value, startPos, re);
@@ -28,6 +29,7 @@ export const phoneVerification = (
     return { value: oldValue, errorMassage: '' };
   }
 
+  
   return {
     value: valueMake(mask, cleanValue),
     errorMassage: '',
@@ -48,7 +50,7 @@ function compare(value, oldValue) {
 function maskArrayInit(maskPattern) {
   let i = 0;
   let startPos = 0;
-  let endPos = 0;
+  // let endPos = 0;
   const mask = maskPattern.split('').map((symbol, index) => {
     if (symbol === '_') {
       i === 0 && (startPos = index);
@@ -75,7 +77,7 @@ function valueMake(mask, cleanValue) {
   let i = 0;
   let value = '';
 
-  for (let iI = 0; i < mask.length; iI += 1) {
+  for (let iI = 0; mask.length - 1; iI += 1) {
     if (mask[iI] === '_') {
       if (i <= cleanValue.length - 1) {
         value = value + cleanValue[i];
@@ -88,32 +90,8 @@ function valueMake(mask, cleanValue) {
         }
       }
     }
-      if (iI > mask.length - 1) {
+    if (iI > mask.length - 1) {
       return value;
     }
   }
 }
-
-
-// function valueMake(mask, cleanValue) {
-//   let i = 0;
-//   let value = '';
-
-//   for (let iI = 0; mask.length - 1; iI += 1) {
-//     if (mask[iI] === '_') {
-//       if (i <= cleanValue.length - 1) {
-//         value = value + cleanValue[i];
-//         i += 1;
-//       }
-//     } else {
-//       if (iI < mask.length - 1) {
-//         if (i < cleanValue.length) {
-//           value = value + mask[iI];
-//         }
-//       }
-//     }
-//       if (iI > mask.length - 1) {
-//       return value;
-//     }
-//   }
-// }

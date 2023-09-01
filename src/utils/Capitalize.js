@@ -5,18 +5,16 @@ export const capitalize = (str, delemitter) => {
     return str
       .split(delemitter)
       .map(word => {
-        if (word[0]) {
-          return `${word[0].toUpperCase()}${word
-            .slice(1, word.length)
-            .toLocaleLowerCase()}`;
-        }
-      })
+        return word[0]
+          ? `${word[0].toUpperCase()}${word
+              .slice(1, word.length)
+              .toLocaleLowerCase()}`
+          : '';
+     })
       .join(delemitter && delemitter)
       .split('-')
       .map(word => {
-        if (word[0]) {
-          return `${word[0].toUpperCase()}${word.slice(1, word.length)}`;
-        }
+        return `${word[0].toUpperCase()}${word.slice(1, word.length)}`;
       })
       .join(delemitter && '-');
   }

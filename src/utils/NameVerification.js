@@ -50,31 +50,28 @@ function compare(value, oldValue) {
 function valueMake(value, oldValue, { symbol, pos }, regPatternAdd) {
   let currentsymbol = '';
   let currentValue = '';
-
   for (let i = 0; i < value.length; i += 1) {
     currentsymbol = value.slice(i, i + 1);
+      if (regPatternAdd.includes(currentsymbol) && i === 0) {
+        return {
+          value: oldValue,
+          errorMassage: "Ім'я не може починатись з символу",
+        };
+      }
 
-    if (regPatternAdd.includes(currentsymbol) && i === 0) {
-      return {
-        value: oldValue,
-        errorMassage: "Ім'я не може починатись з символу",
-      };
-    }
-
-    if (
-      regPatternAdd.includes(currentsymbol) &&
-      i > 1 &&
-      regPatternAdd.includes(value.slice(i - 1, i))
-    ) {
-
-      return {
-        value: oldValue,
-        errorMassage: 'Два символи поспьль стояти не можуть',
-      };
-    }
-    currentValue += currentsymbol;
+      if (
+        regPatternAdd.includes(currentsymbol) &&
+        i > 1 &&
+        regPatternAdd.includes(value.slice(i - 1, i))
+      ) {
+        return {
+          value: oldValue,
+          errorMassage: 'Два символи поспьль стояти не можуть',
+        };
+      }
+      currentValue += currentsymbol;
   }
-value = capitalize(currentValue, " ");
+  value = capitalize(currentValue, ' ');
   return {
     value: value,
     errorMassage: '',

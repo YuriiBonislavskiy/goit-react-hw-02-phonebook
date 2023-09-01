@@ -10,11 +10,14 @@ export const capitalize = (str, delemitter) => {
               .slice(1, word.length)
               .toLocaleLowerCase()}`
           : '';
-     })
+      })
       .join(delemitter && delemitter)
       .split('-')
       .map(word => {
-        return `${word[0].toUpperCase()}${word.slice(1, word.length)}`;
+        return word[0]
+          ? `${word[0].toUpperCase()}${word
+              .slice(1, word.length)}`
+          : '';
       })
       .join(delemitter && '-');
   }

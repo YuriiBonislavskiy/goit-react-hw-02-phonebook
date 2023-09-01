@@ -12,7 +12,6 @@ export const nameVerification = (
   const re = new RegExp(regPattern);
   let cursorPos = getCaretPos(target);
 
-  // console.log(regPatternAdd);
   const lastKey =
     value.length > 1
       ? compare(value, oldValue)
@@ -29,7 +28,6 @@ export const nameVerification = (
   }
 
   const verifiedName = valueMake(value, oldValue, lastKey, regPatternAdd);
-  // console.log(verifiedName);
   cursorPos = getCaretPos(target);
   return {
     value: verifiedName.value,
@@ -49,23 +47,12 @@ function compare(value, oldValue) {
   }
 }
 
-// function cleanValueInit(value) {
-//   if (value.length >= startPos) {
-//     return value
-//       .split('')
-//       .filter((char, index) => re.test(char) && index >= startPos - 1);
-//   } else {
-//     return value;
-//   }
-// }
-
 function valueMake(value, oldValue, { symbol, pos }, regPatternAdd) {
   let currentsymbol = '';
   let currentValue = '';
 
   for (let i = 0; i < value.length; i += 1) {
     currentsymbol = value.slice(i, i + 1);
-    // console.log(currentsymbol+"!",regPatternAdd, "  ", currentsymbol.includes(regPatternAdd), i, value.length);
 
     if (regPatternAdd.includes(currentsymbol) && i === 0) {
       return {
@@ -79,7 +66,7 @@ function valueMake(value, oldValue, { symbol, pos }, regPatternAdd) {
       i > 1 &&
       regPatternAdd.includes(value.slice(i - 1, i))
     ) {
-      // console.log("!!!!!!!!!");
+
       return {
         value: oldValue,
         errorMassage: 'Два символи поспьль стояти не можуть',

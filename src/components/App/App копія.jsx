@@ -4,8 +4,7 @@ import Notiflix from 'notiflix';
 import css from './App.module.css';
 import { nameVerification } from 'utils';
 import { phoneVerification } from 'utils';
-// import { getCaretPos } from 'utils';
-import { мaskPattern, textPattern, symbolsPattern } from 'constans';
+import { мaskPattern } from 'constans';
 import Contacts from '../data/contacts.json';
 import { initContacts } from 'utils';
 
@@ -19,11 +18,11 @@ class App extends Component {
 
   nameInputId = nanoid();
   phoneInputId = nanoid();
+  cursorNumberPos = {};
 
   addContactSubmit = event => {
     event.preventDefault();
     const { contacts, name, number } = this.state;
-    // console.log(contacts);
     if (contacts.findIndex(contact => contact.name === name) >= 0) {
       Notiflix.Notify.failure(`${name} is already in contacts`, {
         timeout: 2000,
@@ -36,29 +35,15 @@ class App extends Component {
       name: name,
       number: number,
     };
-    // console.log(contact);
-    // const Contacts = [contact, ...contacts];
-    this.setState(preState => {
-      const newContacts = [...preState.contacts, contact];
-      return { contacts: newContacts, name: '', number: '' };
+
+        this.setState({
+      contacts: [...contacts, contact],
+      name: '',
+      number: '',
     });
-
-    // this.setState( presState => {
-    //   const newContacts = [...presState.contacts, contact];
-    //   return
-
-    // });
-    // this.setState(() => {
-    //   return {
-    //     name: '',
-    //     number: '',
-    //   };
-    // });
 
     event.target.reset();
     setInterval(this.sortContacts, 20);
-    // console.log(this.state.contacts);
-    // alert('Pause');
   };
 
   sortContacts = () => {
@@ -73,23 +58,11 @@ class App extends Component {
 
   changeFilter = event => {
     const { value } = event.target;
-    // const { value, pattern, title } = event.target;
-    // target.value = nameVerification(value, pattern, title);
-    // event.target.value = value;
-    this.setState(() => {
-      return { filter: value };
-    });
+    this.setState({ filter: value });
   };
 
   getVisibleContacts = () => {
-    // if (this.firstStart) {
-    //   this.sortContacts();
-    //   this.firstStart = false;
-    // }
-
     const { filter, contacts } = this.state;
-
-    // console.log(contacts);
     const normalizedFilter = filter.toLowerCase();
 
     return contacts.filter(contact =>
@@ -97,19 +70,9 @@ class App extends Component {
     );
   };
 
-  saveInputValue = ({ target }) => {
-    const { name } = target;
-    this.setState(() => {
-      return { [name]: target.value };
-    });
-  };
-
   contactValueVerification = event => {
-    // console.log(this.state.name, "  ", this.state.number);
-
     const { target } = event;
-    const { name, value, title, dataset } = event.target;
-    // const cursorPos = getCaretPos(target);
+    const { name, value,  title, dataset } = event.target;
 
     switch (name) {
       case 'name':
@@ -118,8 +81,7 @@ class App extends Component {
           dataset.pattern,
           dataset.patternadd,
           title,
-          dataset.prevalue,
-          target
+          dataset.prevalue
         );
         target.value = verifiedName.value;
         verifiedName.errorMassage &&
@@ -127,13 +89,12 @@ class App extends Component {
             timeout: 2000,
           });
         target.dataset.prevalue = target.value;
-        target.setSelectionRange(
-          verifiedName.cursorPos,
-          verifiedName.cursorPos
-        );
+        this.setState({ name: target.value });
         break;
 
       case 'number':
+        this.cursorNumberPos = target.current.selectionStart;
+        console.log(this.corsorNumberPos);
         const verifiedNumber = phoneVerification(
           value, // Значення Input
           dataset.mask, // Маска вводу
@@ -141,21 +102,17 @@ class App extends Component {
           dataset.prevalue, // Попереднє значення Input
           target
         );
-
+        target.selectionEnd = this.cursorNumberPos;
         target.value = verifiedNumber.value;
-
-        target.value === target.dataset.prevalue &&
+        
+          (target.value === target.dataset.prevalue) &&
           // console.log('!!!!!!!!!!!');
           verifiedNumber.errorMassage &&
-          Notiflix.Notify.failure(verifiedNumber.errorMassage, {
-            timeout: 2000,
-          });
+            Notiflix.Notify.failure(verifiedNumber.errorMassage, {
+              timeout: 2000,
+            });
         target.dataset.prevalue = target.value;
-        target.setSelectionRange(
-          verifiedNumber.cursorPos,
-          verifiedNumber.cursorPos
-        );
-        // console.log(verifiedNumber.cursorPos);
+        this.setState({ number: target.value });
         break;
 
       default:
@@ -176,15 +133,14 @@ class App extends Component {
                 type="text"
                 name="name"
                 // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                pattern="[a-zA-Zа-яА-Я'` -]"
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                 required
-                data-pattern={textPattern}
-                data-patternadd={symbolsPattern}
+                data-pattern="[a-zA-Zа-яА-Я'` -]"
+                data-patternadd="'` -"
                 data-prevalue=""
                 id={this.nameInputId}
                 onChange={this.contactValueVerification}
-                onBlur={this.saveInputValue}
-                // onKeyDown={this.contactValueVerification}
               />
             </label>
             <label htmlFor={this.phoneInputId}>
@@ -201,7 +157,6 @@ class App extends Component {
                 data-prevalue=""
                 placeholder={мaskPattern}
                 onChange={this.contactValueVerification}
-                onBlur={this.saveInputValue}
                 // onKeyDown={this.contactValueVerification}
               />
             </label>
@@ -215,7 +170,6 @@ class App extends Component {
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             onChange={this.changeFilter}
-            onBlur={this.saveInputValue}
           >
             {this.filter}
           </input>

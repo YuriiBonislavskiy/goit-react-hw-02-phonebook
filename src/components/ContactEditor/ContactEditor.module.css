@@ -1,0 +1,26 @@
+.form {
+    display: inline-flex;
+    flex-direction: column;
+    border: 1px solid #060606;
+    padding: 10px 80px 10px 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input {
+    display: block;
+    margin-top: 4px;
+        margin-bottom: 5px;
+        &:hover,
+            &:focus {
+               border-color: rgb(64, 199, 236);
+            }
+}
+
+button {
+    width: fit-content;
+    &:hover, &:focus {background-color: rgb(64, 199, 236)}
+}

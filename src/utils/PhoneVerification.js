@@ -16,8 +16,7 @@ export const phoneVerification = (
 
   const { mask, startPos } = maskArrayInit(maskPattern);
   const cleanValue = cleanValueInit(value, startPos, re);
-  // const maskLength = maskPattern.length;
-  // const maskLength2 = maskPattern.replaceAll('_','').length).length;
+
   const maxValueLength =
     maskPattern.length - maskPattern.replaceAll('_', '').length;
 
@@ -37,8 +36,7 @@ export const phoneVerification = (
   const newValue = valueMake(mask, cleanValue, maxValueLength);
 
   cursorPos = getCaretPos(target);
-  // console.log(cursorPos);
-  // console.log(newValue.length);
+
   if (!re.test(newValue.slice(newValue.length - 1, newValue.length - 1))) {
     let iI = 1;
     for (let i = newValue.length - 1; i >= 0; i -= 1) {
@@ -47,7 +45,6 @@ export const phoneVerification = (
       iI += 1;
     }
   }
-  // console.log(getCaretPos(target));
 
   return {
     value: newValue,

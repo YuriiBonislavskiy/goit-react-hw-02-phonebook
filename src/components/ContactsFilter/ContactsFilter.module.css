@@ -1,0 +1,7 @@
+ .filter {
+
+     &:hover,
+     &:focus {
+         border-color: rgb(64, 199, 236);
+     }
+ }

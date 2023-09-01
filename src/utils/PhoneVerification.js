@@ -34,7 +34,6 @@ export const phoneVerification = (
   }
 
   const newValue = valueMake(mask, cleanValue, maxValueLength);
-
   cursorPos = getCaretPos(target);
 
   if (!re.test(newValue.slice(newValue.length - 1, newValue.length - 1))) {

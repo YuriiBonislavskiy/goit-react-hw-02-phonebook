@@ -36,12 +36,12 @@ class ContactForm extends Component {
     return;}
     
     if (
-      this.props.contacts.findIndex(contact => contact.name === name) >=
-      0
+      this.props.contacts.findIndex(contact => contact.name === name) >= 0
     ) {
-      Notiflix.Notify.failure(`${name} is already in contacts`, {
-        timeout: 2000,
-      });
+      alert(`${name} is already in contacts`);
+      // Notiflix.Notify.failure(`${name} is already in contacts`, {
+      //   timeout: 2000,
+      // });
       return;
     }
 

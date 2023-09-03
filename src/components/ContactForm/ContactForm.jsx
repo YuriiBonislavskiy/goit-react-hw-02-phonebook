@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
-import css from './ContactEditor.module.css';
+import css from './ContactForm.module.css';
 import { nameVerification } from 'utils';
 import { phoneVerification } from 'utils';
 import { мaskPattern, textPattern, symbolsPattern } from 'constans';
 
-class ContactEditor extends Component {
+class ContactForm extends Component {
   stats = {
     name: '',
     number: '',
@@ -167,4 +167,4 @@ class ContactEditor extends Component {
   }
 }
 
-export default ContactEditor;
+export default ContactForm;

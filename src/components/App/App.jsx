@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import ContactEditor from '../ContactEditor';
-import ContactsFilter from '../ContactsFilter';
-import ContactList from '../ContactsList';
+import ContactForm from '../ContactForm';
+import ContactsFilter from '../Filter';
+import ContactList from '../ContactList';
 import Contacts from '../../data/contacts.json';
 import { initContacts } from 'utils';
 import css from './App.module.css';
@@ -50,21 +50,26 @@ class App extends Component {
     );
   };
 
+  deleteContact = event => {
+    this.setState(prevState => {
+      return {contacts: prevState.contacts.filter( ({id}) => id !== event.target.dataset.id),}
+    });
+  }
+
   render() {
     const filteredContacts = this.getVisibleContacts();
     return (
       <div className={css.container}>
-        <h2>Phonebook</h2>
+        <h1>Phonebook</h1>
         <div>
-          <ContactEditor
+          <ContactForm
             contacts={this.state.contacts}
             onSubmit={this.addContact}
           />
 
-          <h3>Contacts</h3>
-          <p>Find contacts by name</p>
+          <h2>Contacts</h2>
           <ContactsFilter filter={this.filter} onChange={this.changeFilter} />
-          <ContactList contacts={filteredContacts} />
+          <ContactList contacts={filteredContacts} onClick={this.deleteContact} />
         </div>
       </div>
     );

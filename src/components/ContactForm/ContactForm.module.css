@@ -22,5 +22,7 @@ input {
 
 button {
     width: fit-content;
+    border: 1px solid;
+    border-radius: 3px;
     &:hover, &:focus {background-color: rgb(64, 199, 236)}
 }

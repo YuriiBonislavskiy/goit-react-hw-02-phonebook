@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import ContactForm from '../ContactForm';
 import ContactsFilter from '../Filter';
 import ContactList from '../ContactList';
-import Contacts from '../../data/contacts.json';
-import { initContacts } from 'utils';
+import contacts from '../../data/contacts.json';
 import css from './App.module.css';
 
 
 class App extends Component {
   state = {
-    contacts: initContacts(Contacts),
+    contacts: contacts,
     filter: '',
     name: '',
     number: '',
@@ -22,18 +21,18 @@ class App extends Component {
       };
     });
 
-    setInterval(this.sortContacts, 20);
+    // setInterval(this.sortContacts, 20);
   };
 
-  sortContacts = () => {
-    const { contacts } = this.state;
-    const Contacts = contacts.sort((firstContact, secondContact) =>
-      firstContact.name.localeCompare(secondContact.name)
-    );
-    this.setState({
-      contacts: Contacts,
-    });
-  };
+  // sortContacts = () => {
+  //   const { contacts } = this.state;
+  //   const Contacts = contacts.sort((firstContact, secondContact) =>
+  //     firstContact.name.localeCompare(secondContact.name)
+  //   );
+  //   this.setState({
+  //     contacts: Contacts,
+  //   });
+  // };
 
   changeFilter = event => {
     const { value } = event.target;
@@ -50,9 +49,9 @@ class App extends Component {
     );
   };
 
-  deleteContact = event => {
-    this.setState(prevState => {
-      return {contacts: prevState.contacts.filter( ({id}) => id !== event.target.dataset.id),}
+  deleteContact = id => {
+    this.setState( ({contacts}) => {
+      return {contacts: contacts.filter( contact => contact.id !== id),}
     });
   }
 
@@ -68,8 +67,15 @@ class App extends Component {
           />
 
           <h2>Contacts</h2>
-          <ContactsFilter filter={this.filter} onChange={this.changeFilter} value={(this.state.filter)}/>
-          <ContactList contacts={filteredContacts} onClick={this.deleteContact} />
+          <ContactsFilter
+            filter={this.filter}
+            onChangeFilter={this.changeFilter}
+            value={this.state.filter}
+          />
+          <ContactList
+            contacts={filteredContacts}
+            onDeleteContact={this.deleteContact}
+          />
         </div>
       </div>
     );

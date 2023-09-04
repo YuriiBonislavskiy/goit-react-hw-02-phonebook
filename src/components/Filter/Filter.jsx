@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import css from './Filter.module.css';
 
-const contactsFilter = ({ filter, onChange, value }) => {
+const ContactsFilter = ({ filter, onChangeFilter }) => {
   return (
     <span>
       <p>Find contacts by name</p>
@@ -10,8 +10,7 @@ const contactsFilter = ({ filter, onChange, value }) => {
         type="text"
         name="contactsFilter"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        onChange={onChange}
-        value={value}
+        onChange={onChangeFilter}
       >
         {filter}
       </input>
@@ -19,9 +18,9 @@ const contactsFilter = ({ filter, onChange, value }) => {
   );
 };
 
-contactsFilter.protoType = {
+ContactsFilter.protoType = {
   filter: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default contactsFilter;
+export default ContactsFilter;

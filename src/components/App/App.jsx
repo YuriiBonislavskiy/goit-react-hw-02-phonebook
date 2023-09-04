@@ -68,7 +68,7 @@ class App extends Component {
           />
 
           <h2>Contacts</h2>
-          <ContactsFilter filter={this.filter} onChange={this.changeFilter} />
+          <ContactsFilter filter={this.filter} onChange={this.changeFilter} value={(this.state.filter)}/>
           <ContactList contacts={filteredContacts} onClick={this.deleteContact} />
         </div>
       </div>

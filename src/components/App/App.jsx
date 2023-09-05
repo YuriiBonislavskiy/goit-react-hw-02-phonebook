@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ContactForm from '../ContactForm';
-import ContactsFilter from '../Filter';
+import Filter from '../Filter';
 import ContactList from '../ContactList';
 import contacts from '../../data/contacts.json';
 import css from './App.module.css';
@@ -10,8 +10,6 @@ class App extends Component {
   state = {
     contacts: contacts,
     filter: '',
-    name: '',
-    number: '',
   };
 
   addContact = newContact => {
@@ -20,19 +18,7 @@ class App extends Component {
         contacts: [...prevState.contacts, newContact],
       };
     });
-
-    // setInterval(this.sortContacts, 20);
   };
-
-  // sortContacts = () => {
-  //   const { contacts } = this.state;
-  //   const Contacts = contacts.sort((firstContact, secondContact) =>
-  //     firstContact.name.localeCompare(secondContact.name)
-  //   );
-  //   this.setState({
-  //     contacts: Contacts,
-  //   });
-  // };
 
   changeFilter = event => {
     const { value } = event.target;
@@ -67,11 +53,11 @@ class App extends Component {
           />
 
           <h2>Contacts</h2>
-          <ContactsFilter
-            filter={this.filter}
+          <Filter
+            filter={this.state.filter}
             onChangeFilter={this.changeFilter}
-            value={this.state.filter}
           />
+          
           <ContactList
             contacts={filteredContacts}
             onDeleteContact={this.deleteContact}

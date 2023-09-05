@@ -6,23 +6,43 @@
 }
 
 label {
+    position: relative;
     display: block;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
-input {
+.formInput {
     display: block;
     margin-top: 4px;
-        margin-bottom: 5px;
-        &:hover,
-            &:focus {
-               border-color: rgb(64, 199, 236);
-            }
+    margin-bottom: 20px;
+
+    &:hover,
+    &:focus {
+        border-color: rgb(64, 199, 236);
+    }
 }
 
 button {
     width: fit-content;
+    margin-top: 4px;
     border: 1px solid;
     border-radius: 3px;
-    &:hover, &:focus {background-color: rgb(64, 199, 236)}
+
+    &:hover,
+    &:focus {
+        background-color: rgb(64, 199, 236)
+    }
+}
+
+.error {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    min-width: 200px;
+    /* padding-left: 8px; */
+    /* transform: translateX(180px); */
+    /* border: 1px solid red; */
+    color: red;
+    /* transform: translateY(-50%); */
+
 }

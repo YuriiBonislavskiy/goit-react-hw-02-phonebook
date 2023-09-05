@@ -42,7 +42,7 @@ class ContactForm extends Component {
       name: name,
       number: number,
     };
-    this.props.onSubmit(contact);
+    this.props.onAddContact(contact);
     resetForm();
   };
 

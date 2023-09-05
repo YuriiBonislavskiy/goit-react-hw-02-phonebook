@@ -49,7 +49,7 @@ class App extends Component {
         <div>
           <ContactForm
             contacts={this.state.contacts}
-            onSubmit={this.addContact}
+            onAddContact={this.addContact}
           />
 
           <h2>Contacts</h2>
@@ -57,7 +57,7 @@ class App extends Component {
             filter={this.state.filter}
             onChangeFilter={this.changeFilter}
           />
-          
+
           <ContactList
             contacts={filteredContacts}
             onDeleteContact={this.deleteContact}

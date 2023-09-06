@@ -5,14 +5,15 @@ import ContactsListItem from '../ContactsListItem';
 const ContactsList = ({ contacts, onDeleteContact }) => {
   return (
     <ul className={css.contactlist}>
-      { contacts.map( contact => {
+      {contacts.map(contact => {
         return (
           <ContactsListItem
             contact={contact}
             onDeleteContact={onDeleteContact}
             key={contact.id}
           />
-        );})}
+        );
+      })}
     </ul>
   );
 };

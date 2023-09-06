@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { nanoid } from 'nanoid';
 import css from './ContactForm.module.css';
 
-class ContactForm extends Component {
-
-  initialValues = {
+export const ContactForm = ({ contacts, onAddContact }) => {
+  const initialValues = {
     name: '',
     number: '',
   };
 
-  schema = yup.object().shape({
+  const schema = yup.object().shape({
     name: yup
       .string()
       .required('Required')
@@ -30,9 +29,9 @@ class ContactForm extends Component {
       ),
   });
 
-  handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (values, { resetForm }) => {
     const { name, number } = values;
-    const { contacts } = this.props;
+    // const { contacts } = this.props;
     if (contacts.findIndex(contact => contact.name === name) >= 0) {
       alert(`${name} is already in contacts`);
       return;
@@ -42,11 +41,11 @@ class ContactForm extends Component {
       name: name,
       number: number,
     };
-    this.props.onAddContact(contact);
+    onAddContact(contact);
     resetForm();
   };
 
-  formError = ({ name }) => {
+  const FormError = ({ name }) => {
     return (
       <ErrorMessage
         name={name}
@@ -55,43 +54,51 @@ class ContactForm extends Component {
     );
   };
 
-  render() {
-    const nameInputId = nanoid();
-    const phoneInputId = nanoid();
+  const nameInputId = nanoid();
+  const phoneInputId = nanoid();
 
-    return (
-      <Formik
-        initialValues={this.initialValues}
-        validationSchema={this.schema}
-        onSubmit={this.handleSubmit}
-      >
-        <Form className={css.form} autoComplete="off">
-          <label htmlFor={nameInputId}>
-            Name
-            <Field
-              id={nameInputId}
-              className={css.formInput}
-              type="text"
-              name="name"
-            />
-            <this.formError name="name"/>
-          </label>
-          <label htmlFor={phoneInputId}>
-            Number
-            <Field
-              id={phoneInputId}
-              className={css.formInput}
-              type="tel"
-              name="number"
-            />
-            <this.formError name="number" />
-          </label>
-          <button type="submit">Add contact</button>
-        </Form>
-      </Formik>
-    );
-  }
-}
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={schema}
+      onSubmit={handleSubmit}
+    >
+      <Form className={css.form} autoComplete="off">
+        <label htmlFor={nameInputId}>
+          Name
+          <Field
+            id={nameInputId}
+            className={css.formInput}
+            type="text"
+            name="name"
+          />
+          <FormError name="name" />
+        </label>
+        <label htmlFor={phoneInputId}>
+          Number
+          <Field
+            id={phoneInputId}
+            className={css.formInput}
+            type="tel"
+            name="number"
+          />
+          <FormError name="number" />
+        </label>
+        <button type="submit">Add contact</button>
+      </Form>
+    </Formik>
+  );
+};
+
+ContactForm.prototype = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+  onAddContact: PropTypes.func.isRequired,
+};
 
 export default ContactForm;
-

@@ -4,3 +4,9 @@
   min-width: 320px;
 }
 
+.contactitem {
+  position: relative;
+  margin-bottom: 8px;
+  width: 100%;
+  justify-content: left;
+}

@@ -1,11 +1,4 @@
 
-.contactitem {
-  position: relative;
-  margin-bottom: 8px;
-  width: 100%;
-  justify-content: left;
-}
-
 .deletebutton {
   position: absolute;
   right: 0px;
